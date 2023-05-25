@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-practice-http",
+  "version": "1.0.0",
+  "description": "L'objectif de cet atelier est de récupérer les dernières versions disponibles sur le registre npm pour un ensemble de packages référencé dans un fichier package.json.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "FredGuiou",
+  "license": "ISC",
+  "dependencies": {
+    "undici": "^5.22.1",
+    "@nodesecure/eslint-config": "github:nodesecure/eslint-config"
+  }
+}
