@@ -25,18 +25,12 @@ async function getLatestVersion(name) {
   try {
     const npmRegistryUrl = `https://registry.npmjs.org/${name}`;
     const data = await fetchData(npmRegistryUrl);
-    console.log(data);
+    // Dans la doc de npm registry
+    console.log(data["dist-tags"]);
   }
   catch (error) {
     throw new Error(`Request failed : status code ${error.status}`);
   }
 }
 
-// Comparer les versions et voir si c'est mineur ou majeur.
-
-// Actions sur Package.json (Principale fonction)
-// prévoir d'utiliser la fonction de requête HTTP.
-// prévoir d'utiliser la fonction de comparaison.
-
-// lancement de la principale fonction.
 getLatestVersion("pg");
