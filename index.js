@@ -21,6 +21,16 @@ async function fetchData(url) {
 }
 
 // Récupérer la dernière version d'un package depuis le registre des versions npm.
+async function getLatestVersion(name) {
+  try {
+    const npmRegistryUrl = `https://registry.npmjs.org/${name}`;
+    const data = await fetchData(npmRegistryUrl);
+    console.log(data);
+  }
+  catch (error) {
+    throw new Error(`Request failed : status code ${error.status}`);
+  }
+}
 
 // Comparer les versions et voir si c'est mineur ou majeur.
 
@@ -29,3 +39,4 @@ async function fetchData(url) {
 // prévoir d'utiliser la fonction de comparaison.
 
 // lancement de la principale fonction.
+getLatestVersion("pg");
