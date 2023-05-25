@@ -3,9 +3,13 @@
 // Import NodeJs dependencies
 import fs from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "url";
 
 // Import des third party dependencies
 import { request } from "undici";
+
+// Import des constantes
+const file = "package.json";
 
 // Effectuer une requête HTTP avec Undici.
 async function fetchData(url) {
@@ -25,12 +29,21 @@ async function getLatestVersion(name) {
   try {
     const npmRegistryUrl = `https://registry.npmjs.org/${name}`;
     const data = await fetchData(npmRegistryUrl);
-    // Dans la doc de npm registry
-    console.log(data["dist-tags"]);
+
+    return data["dist-tags"].latest;
   }
   catch (error) {
     throw new Error(`Request failed : status code ${error.status}`);
   }
 }
 
-getLatestVersion("pg");
+// Lire le fichier local package.json avec le module fs
+async function readPackageJson() {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const result = await fs.readFile(path.join(__dirname, "fixtures", `${file}`), { encoding: "utf-8" });
+  const { dependencies } = JSON.parse(result);
+  console.log({ dependencies });
+}
+
+readPackageJson();
