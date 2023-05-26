@@ -22,7 +22,7 @@ async function fetchData(url) {
     return data;
   }
   catch (error) {
-    throw new Error(`Request failed : status code ${error.status}`);
+    throw new Error(`HTTP request failed : status code ${error.status}`);
   }
 }
 
@@ -37,7 +37,7 @@ async function getLatestVersion(Packageame) {
     return latestVersion;
   }
   catch (error) {
-    throw new Error(`Request failed : status code ${error.status}`);
+    throw new Error(`Npm request failed : status code ${error.status}`);
   }
 }
 
@@ -62,7 +62,7 @@ async function compareVersions(latestVersion, localVersion) {
     return null;
   }
   catch (error) {
-    throw new Error("Error from compareVersions function");
+    throw new Error("Function compareVersions Process error");
   }
 }
 
@@ -71,8 +71,8 @@ async function compareVersions(latestVersion, localVersion) {
 async function readPackageJson() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
-  const result = await fs.readFile(path.join(__dirname, "fixtures", `${kFile}`), { encoding: "utf-8" });
-  const { dependencies } = JSON.parse(result);
+  const PackageJson = await fs.readFile(path.join(__dirname, "fixtures", `${kFile}`), { encoding: "utf-8" });
+  const { dependencies } = JSON.parse(PackageJson);
 
   return dependencies;
 }
