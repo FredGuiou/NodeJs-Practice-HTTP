@@ -27,9 +27,9 @@ async function fetchData(url) {
 }
 
 // Récupérer la dernière version d'un package depuis le registre des versions npm.
-async function getLatestVersion(name) {
+async function getLatestVersion(Packageame) {
   try {
-    const npmRegistryUrl = `https://registry.npmjs.org/${name}`;
+    const npmRegistryUrl = `https://registry.npmjs.org/${Packageame}`;
     const data = await fetchData(npmRegistryUrl);
     const latestVersion = data["dist-tags"].latest;
     console.log(latestVersion);
@@ -43,8 +43,27 @@ async function getLatestVersion(name) {
 
 // Comparer deux versions avec le module npm semver
 async function compareVersions(latestVersion, localVersion) {
-  const comparator = semver.gt(latestVersion, localVersion);
-  console.log(comparator);
+  try {
+    const comparator = semver.gt(latestVersion, localVersion);
+
+    if (comparator === true) {
+      if (semver.major(localVersion) !== semver.major(latestVersion)) {
+        const result = `Major version ${latestVersion} available !`;
+
+        return result;
+      }
+      if (semver.minor(localVersion) !== semver.minor(latestVersion)) {
+        const result = `Minor version ${latestVersion} available !`;
+
+        return result;
+      }
+    }
+
+    return null;
+  }
+  catch (error) {
+    throw new Error("Error from compareVersions function");
+  }
 }
 
 
@@ -54,12 +73,11 @@ async function readPackageJson() {
   const __dirname = path.dirname(__filename);
   const result = await fs.readFile(path.join(__dirname, "fixtures", `${kFile}`), { encoding: "utf-8" });
   const { dependencies } = JSON.parse(result);
-  console.log(dependencies);
 
   return dependencies;
 }
 
 // Lancement de la fonction
-// getLatestVersion("pg");
-// readPackageJson();
-compareVersions("9.8.7", "1.2.3");
+// getLatestVersion("pg"); // 8.11.0 soit la latest du package "pg"
+// readPackageJson(); // rendu terminal d'un Objet Json des dépendances du fichier Package.json
+// compareVersions("10.1.7", "9.8.7"); // Major version 10.1.7 available !
