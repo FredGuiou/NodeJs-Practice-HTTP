@@ -11,7 +11,8 @@
   "author": "FredGuiou",
   "license": "ISC",
   "dependencies": {
-    "undici": "^5.22.1",
-    "@nodesecure/eslint-config": "github:nodesecure/eslint-config"
+    "@nodesecure/eslint-config": "github:nodesecure/eslint-config",
+    "semver": "^7.5.1",
+    "undici": "^5.22.1"
   }
 }
