@@ -17,9 +17,10 @@ const kFile = "package.json";
 async function fetchData(url) {
   try {
     // Je récupère le body via destructuring avec la fonction request de Undici.
-    const { body } = await request(url);
+    const { statusCode, body } = await request(url);
     // Je stocke le body dans une constante data en tant qu'objet Javascript
-    const data = await body.json();
+    const bodyJson = await body.json();
+    const data = { statusCode, body: bodyJson };
 
     return data;
   }
@@ -36,7 +37,7 @@ async function getLatestVersion(packageName) {
     const npmRegistryUrl = `https://registry.npmjs.org/${packageName}`;
     // Je récupère mes données en passant en argument à fetchData npmRegistryUrl
     const data = await fetchData(npmRegistryUrl);
-    const latestVersion = data["dist-tags"].latest;
+    const latestVersion = data.body["dist-tags"].latest;
 
     return latestVersion;
   }
