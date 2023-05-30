@@ -47,7 +47,7 @@ async function getLatestVersion(packageName) {
 }
 
 // Comparer deux versions avec le module npm semver.
-async function compareVersions(latestVersion, localVersion) {
+function compareVersions(latestVersion, localVersion) {
   try {
     // Grâce à semver et sa fonction gt je compare globalement les deux versions (celle en local et la laterst récupérée avec la fonction au dessus)
     // Je détermine si latestVersion est supérieur à localVersion. (NB: Attention à l'ordre des arguments) Renvoie un booléen true.
@@ -80,7 +80,7 @@ async function compareVersions(latestVersion, localVersion) {
 
 
 // Lire le fichier local package.json avec le module fs.
-async function readPackageJson() {
+function readPackageJson() {
   // Récupérer le chemin de fichier.
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
@@ -104,7 +104,7 @@ async function getPackages() {
       const localVersion = dependencies[packageName].replace("^", "");
       const latestVersion = await getLatestVersion(packageName);
 
-      const comparison = await compareVersions(latestVersion, localVersion);
+      const comparison = compareVersions(latestVersion, localVersion);
 
       return {
         packageName,
@@ -137,9 +137,12 @@ async function displayGetPackages() {
 }
 
 // Lancement de la fonction
+// fetchData("https://registry.npmjs.org/");
 // getLatestVersion("pg"); // 8.11.0 soit la latest du package "pg"
 // readPackageJson(); // rendu terminal d'un Objet Json des dépendances du fichier Package.json
 // compareVersions("10.1.7", "9.8.7"); // Major version 10.1.7 available !
 // getPackages(); // retourne un tableau d'objet Json des dépendances avec versions et statuts de comparaison
 
 displayGetPackages();
+
+export default { kFile, fetchData, getLatestVersion, compareVersions, readPackageJson, getPackages, displayGetPackages };
