@@ -57,20 +57,20 @@ async function compareVersions(latestVersion, localVersion) {
     if (comparator) {
       // Si le major local est inférieur au major latest alors je retourne un message de dispo d'une version majeure.
       if (semver.major(localVersion) < semver.major(latestVersion)) {
-        const result = `Major version ${latestVersion} available !`;
+        const result = `Major ${latestVersion} available`;
 
         return result;
       }
       // Si le minor local est inférieur au minor latest alors je retourne un message de disponibilité d'une version mineure.
       if (semver.minor(localVersion) < semver.minor(latestVersion)) {
-        const result = `Minor version ${latestVersion} available !`;
+        const result = `Minor ${latestVersion} available`;
 
         return result;
       }
     }
 
     // Sinon je renvoie null car pas de version au minimum mineure à récupérer. (Cas du patch mais non demandé par l'énoncé)
-    return "No major or minor update avalaible";
+    return "No update available";
   }
   catch (error) {
     // Si une erreur se déclenche dans le try je la throw.
@@ -127,7 +127,7 @@ async function displayGetPackages() {
     if (element.status === "fulfilled") {
       const { packageName, comparison } = element.value;
       if (comparison) {
-        console.log(`${comparison} - for npm package ${packageName}`);
+        console.log(`${comparison} - for ${packageName}`);
       }
     }
     else {
