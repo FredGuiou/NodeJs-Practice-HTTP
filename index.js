@@ -15,19 +15,17 @@ const kFile = "package.json";
 
 // Effectuer une requête HTTP avec Undici.
 async function fetchData(url) {
-  try {
-    // Je récupère le body via destructuring avec la fonction request de Undici.
-    const { statusCode, body } = await request(url);
-    // Je stocke le body dans une constante data en tant qu'objet Javascript
-    const bodyJson = await body.json();
-    const data = { statusCode, body: bodyJson };
+  // Je récupère le body via destructuring avec la fonction request de Undici.
+  const { statusCode, body } = await request(url);
 
-    return data;
+  if (statusCode !== 200) {
+    throw new Error(`HTTP request failed : status code ${statusCode}`);
   }
-  catch (error) {
-    // Si une erreur se déclenche dans le try je la throw  avec le code pour mieux l'identifier.
-    throw new Error(`HTTP request failed : status code ${error}`);
-  }
+  // Je stocke le body dans une constante data en tant qu'objet Javascript
+  const bodyJson = await body.json();
+  const data = { statusCode, body: bodyJson };
+
+  return data;
 }
 
 // Récupérer la dernière version d'un package depuis le registre des versions npm.
@@ -146,7 +144,7 @@ async function displayGetPackages() {
 
 displayGetPackages();
 
-export default {
+export {
   kFile,
   fetchData,
   getLatestVersion,
