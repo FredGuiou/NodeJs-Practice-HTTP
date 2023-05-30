@@ -146,4 +146,12 @@ async function displayGetPackages() {
 
 displayGetPackages();
 
-export default { kFile, fetchData, getLatestVersion, compareVersions, readPackageJson, getPackages, displayGetPackages };
+export default {
+  kFile,
+  fetchData,
+  getLatestVersion,
+  compareVersions,
+  readPackageJson,
+  getPackages,
+  displayGetPackages
+};
