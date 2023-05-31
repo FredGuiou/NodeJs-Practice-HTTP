@@ -78,11 +78,22 @@ function compareVersions(latestVersion, localVersion) {
 
 // Lire le fichier local package.json avec le module fs.
 function getDependenciesFromPackageJson() {
-  // Récupérer le chemin de fichier.
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  // Avec la fonction readFile du module fs j'accède au fichier package.json définit dans kFile.
-  const PackageJson = fs.readFileSync(path.join(__dirname, "fixtures", `${kFile}`), { encoding: "utf-8" });
+  const cwd = process.cwd();
+
+  const packageJsonPath = path.join(cwd, kFile);
+
+  if (!fs.existsSync(packageJsonPath)) {
+    console.log(`${kFile} does not exist in the current directory.`);
+
+    process.exit();
+  }
+
+  const PackageJson = fs.readFileSync(packageJsonPath, { encoding: "utf-8" });
+  // // Récupérer le chemin de fichier.
+  // const __filename = fileURLToPath(import.meta.url);
+  // const __dirname = path.dirname(__filename);
+  // // Avec la fonction readFile du module fs j'accède au fichier package.json définit dans kFile.
+  // const PackageJson = fs.readFileSync(path.join(__dirname, "fixtures", `${kFile}`), { encoding: "utf-8" });
   // Je récupère les dependencies qui sont en string que je transforme en objet Json avec parse.
   const { dependencies } = JSON.parse(PackageJson);
 

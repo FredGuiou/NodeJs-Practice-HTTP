@@ -1,16 +1,18 @@
+#!/usr/bin/env node
+
+// Import des fonctions de utils
 import * as utils from "./utils.js";
 
 // Lancement de la fonction
-// fetchData("https://registry.npmjs.org/");
-// getLatestVersion("pg"); // 8.11.0 soit la latest du package "pg"
-// readPackageJson(); // rendu terminal d'un Objet Json des dépendances du fichier Package.json
-// compareVersions("10.1.7", "9.8.7"); // Major version 10.1.7 available !
-// getPackages(); // retourne un tableau d'objet Json des dépendances avec versions et statuts de comparaison
-
-// displayGetPackages();
-
 async function main() {
   const dependencies = await utils.getDependenciesFromPackageJson();
+
+  if (!dependencies) {
+    const error = "No dependencies found in package.json";
+    console.log(error);
+
+    return null;
+  }
 
   const packagesVersionsPromises = await utils.fetchPackagesVersions(dependencies);
 
@@ -29,6 +31,8 @@ async function main() {
       console.log(`${comparison} - for ${packageName}`);
     }
   }
+
+  return null;
 }
 
 main();

@@ -14,5 +14,8 @@
     "@nodesecure/eslint-config": "github:nodesecure/eslint-config",
     "semver": "^7.5.1",
     "undici": "^5.22.1"
+  },
+  "bin": {
+    "packver": "./cli.js"
   }
 }
