@@ -1,5 +1,3 @@
-"use Strict";
-
 // Import NodeJs dependencies
 import fs from "node:fs";
 import path from "node:path";
