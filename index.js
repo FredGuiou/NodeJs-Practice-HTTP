@@ -41,7 +41,7 @@ async function getLatestVersion(packageName) {
   }
   catch (error) {
     // Si une erreur se déclenche dans le try je la throw  avec le code pour mieux l'identifier.
-    throw new Error(`Npm request failed : status code ${error}`);
+    throw new Error("Npm request failed");
   }
 }
 
@@ -142,7 +142,7 @@ async function displayGetPackages() {
 // compareVersions("10.1.7", "9.8.7"); // Major version 10.1.7 available !
 // getPackages(); // retourne un tableau d'objet Json des dépendances avec versions et statuts de comparaison
 
-displayGetPackages();
+// displayGetPackages();
 
 export {
   kFile,
