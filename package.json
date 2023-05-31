@@ -2,10 +2,10 @@
   "name": "nodejs-practice-http",
   "version": "1.0.0",
   "description": "L'objectif de cet atelier est de récupérer les dernières versions disponibles sur le registre npm pour un ensemble de packages référencé dans un fichier package.json.",
-  "main": "index.js",
+  "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
+    "start": "node main.js",
     "test": "node --test test/"
   },
   "author": "FredGuiou",

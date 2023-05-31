@@ -8,7 +8,7 @@ import { MockAgent, setGlobalDispatcher } from "undici";
 // Import des constantes et fonctions à tester
 // "*" permet de tout importer
 // "as" permet d'encapsuler l'ensemble.
-import * as npmTest from "../index.js";
+import * as utils from "../utils.js";
 
 // Import des constantes
 const kNpmApiUrl = "https://registry.npmjs.org";
@@ -43,16 +43,16 @@ after(async() => {
 
 describe("fetchData function", () => {
   it("Should return a status Code 200 for \"OK\"", async() => {
-    const result = await npmTest.fetchData(`${kNpmApiUrl}/pg`);
+    const result = await utils.fetchData(`${kNpmApiUrl}/pg`);
     assert.equal(result.statusCode, 200);
   });
   it("Should return a body", async() => {
-    const result = await npmTest.fetchData(`${kNpmApiUrl}/pg`);
+    const result = await utils.fetchData(`${kNpmApiUrl}/pg`);
     assert.deepEqual(result.body, mockResult);
   });
   it("Should throw an error if request failed", async() => {
     await assert.rejects(async() => {
-      await npmTest.fetchData(`${kNpmApiUrl}/toto`);
+      await utils.fetchData(`${kNpmApiUrl}/toto`);
     }, {
       name: "Error",
       message: "HTTP request failed : status code 500"
@@ -60,23 +60,3 @@ describe("fetchData function", () => {
   });
 });
 
-
-// });
-// describe("readPackageJson function", () => {
-//   it("", () => {
-
-//   });
-
-// });
-// describe("getPackages function", () => {
-//   it("", () => {
-
-//   });
-
-// });
-// describe("displayGetPackages function", () => {
-//   it("", () => {
-
-//   });
-
-// });

@@ -23,13 +23,15 @@ mockAgent.disableNetConnect();
 // Crée et récupère les instances avec pour argument l'adresse interrogée.
 const mockPool = mockAgent.get(kNpmApiUrl);
 
-mockPool.intercept({ path: "/foo" }).reply(200, { "dist-tags": { latest: "1.2.3" } }, {
+// Permet de définir les règles d'interception. (persist permet de garder la règle en mémoire pour une excution future)
+mockPool.intercept({ path: "/foo" }).reply(200, { "dist-tags": { latest: "5.3.6" } }, {
+  headers: { "Content-Type": "application/json" }
+}).persist();
+mockPool.intercept({ path: "/bar" }).reply(200, { "dist-tags": { latest: "5.7.1" } }, {
   headers: { "Content-Type": "application/json" }
 }).persist();
 
-mockPool.intercept({ path: "/bar" }).reply(500, {}, {
-  headers: { "Content-Type": "application/json" }
-}).persist();
+
 // Injection du Mockagent dans le code pour les appels HTTP avec la méthode setGlobalDispatcher.
 setGlobalDispatcher(mockAgent);
 
@@ -37,18 +39,27 @@ after(async() => {
   await mockAgent.close();
 });
 
-describe("getLatestVersion function", () => {
-  it("Should return the latest version from foo", async() => {
-    const result = await utils.getLatestVersion("foo");
-    assert.equal(result, "1.2.3");
-  });
-  it("Should throw an error if request fail", async() => {
-    await assert.rejects(async() => {
-      await utils.getLatestVersion("bar");
-    }, {
-      name: "Error",
-      message: "Npm request failed"
-    });
+describe("fetchPackagesVersions function", () => {
+  it("Should return promises results", async() => {
+    const result = await utils.fetchPackagesVersions({ foo: "4.3.6", bar: "5.7.1" });
+    const expectedResult = [
+      {
+        status: "fulfilled",
+        value: {
+          packageName: "foo",
+          localVersion: "4.3.6",
+          latestVersion: "5.3.6"
+        }
+      },
+      {
+        status: "fulfilled",
+        value: {
+          packageName: "bar",
+          localVersion: "5.7.1",
+          latestVersion: "5.7.1"
+        }
+      }
+    ];
+    assert.deepEqual(result, expectedResult);
   });
 });
-

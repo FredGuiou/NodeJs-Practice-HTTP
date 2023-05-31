@@ -79,7 +79,7 @@ function compareVersions(latestVersion, localVersion) {
 
 
 // Lire le fichier local package.json avec le module fs.
-function readPackageJson() {
+function getDependenciesFromPackageJson() {
   // Récupérer le chemin de fichier.
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
@@ -92,10 +92,7 @@ function readPackageJson() {
 }
 
 // Effectuer les requêtes en parallèle.
-async function getPackages() {
-  // J'accède au fichier package.json grâce à la fonction de lecture de fichier.
-  const dependencies = await readPackageJson();
-
+async function fetchPackagesVersions(dependencies) {
   // Je récupère dans un tableau la liste des noms des dépendances.
   // map sur chaque dependances pour interroger la npmRegistry et comparer avec le local.
   const requests = Object.keys(dependencies).map(
@@ -103,53 +100,21 @@ async function getPackages() {
       const localVersion = dependencies[packageName].replace("^", "");
       const latestVersion = await getLatestVersion(packageName);
 
-      const comparison = compareVersions(latestVersion, localVersion);
-
       return {
         packageName,
         localVersion,
-        latestVersion,
-        comparison
+        latestVersion
       };
     });
 
-  // Avec Promise.allSettled le résultat est obtenu quand toutes les requêtes sont accomplies.
-  const promisesResults = await Promise.allSettled(requests);
-
-  return promisesResults;
+  return Promise.allSettled(requests);
 }
-// Afficher dans le terminal le résultat pour chaque package.
-async function displayGetPackages() {
-  const fetchPromisesResults = await getPackages();
-
-  fetchPromisesResults.forEach((element) => {
-    if (element.status === "fulfilled") {
-      const { packageName, comparison } = element.value;
-      if (comparison) {
-        console.log(`${comparison} - for ${packageName}`);
-      }
-    }
-    else {
-      console.log("Error");
-    }
-  });
-}
-
-// Lancement de la fonction
-// fetchData("https://registry.npmjs.org/");
-// getLatestVersion("pg"); // 8.11.0 soit la latest du package "pg"
-// readPackageJson(); // rendu terminal d'un Objet Json des dépendances du fichier Package.json
-// compareVersions("10.1.7", "9.8.7"); // Major version 10.1.7 available !
-// getPackages(); // retourne un tableau d'objet Json des dépendances avec versions et statuts de comparaison
-
-// displayGetPackages();
 
 export {
   kFile,
   fetchData,
   getLatestVersion,
   compareVersions,
-  readPackageJson,
-  getPackages,
-  displayGetPackages
+  getDependenciesFromPackageJson,
+  fetchPackagesVersions
 };

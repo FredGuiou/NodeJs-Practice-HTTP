@@ -5,11 +5,11 @@ import assert from "node:assert";
 // Import des constantes et fonctions à tester
 // "*" permet de tout importer
 // "as" permet d'encapsuler l'ensemble.
-import * as npmTest from "../index.js";
+import * as utils from "../utils.js";
 
-describe("readPackageJson function", () => {
+describe("getDependenciesFromPackageJson function", () => {
   it("Should parse dependencies", () => {
-    const result = npmTest.readPackageJson();
+    const result = utils.getDependenciesFromPackageJson();
 
     const expectedResult = {
       "@fast-csv/parse": "^4.3.6",
